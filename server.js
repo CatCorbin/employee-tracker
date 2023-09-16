@@ -24,13 +24,11 @@ function viewDepartments() {
     start();
   }
   
-  
   // View roles
   function viewRoles() {
     const query = "SELECT * FROM roles";
     start();
   }
-  
   
   // View employees
   function viewEmployees() {
@@ -56,7 +54,6 @@ function addDepartment() {
         });
       });
   }
-  
   
   // Add a role
   function addRole() {
@@ -86,7 +83,6 @@ function addDepartment() {
         });
       });
   }
-  
   
   // Add new employee
   function addEmployee() {
