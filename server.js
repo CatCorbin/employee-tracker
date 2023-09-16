@@ -17,3 +17,24 @@ connection.connect((err) => {
     console.log("Connection to database successful!");
     start();
 });
+
+// View departments
+function viewDepartments() {
+    const query = "SELECT * FROM departments";
+    start();
+  }
+  
+  
+  // View roles
+  function viewRoles() {
+    const query = "SELECT * FROM roles";
+    start();
+  }
+  
+  
+  // View employees
+  function viewEmployees() {
+    const query = "SELECT * FROM employees";
+    start();
+  }
+  
