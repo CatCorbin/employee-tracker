@@ -37,7 +37,7 @@ function viewDepartments() {
     const query = "SELECT * FROM employees";
     start();
   }
-  
+
   // Add a department
 function addDepartment() {
     inquirer.prompt([
@@ -122,3 +122,26 @@ function addDepartment() {
       });
   }
   
+  // Promote or demote employee
+function updateEmployeeRole() {
+  inquirer.prompt([
+      {
+        type: "input",
+        name: "employeeId",
+        message: "What is the employee ID of the employee you want to update?",
+      },
+      {
+        type: "input",
+        name: "newRoleId",
+        message: "What is the employee's new role ID?",
+      },
+    ])
+    .then((req, res) => {
+      const query = "UPDATE employees SET role_id = ? WHERE employee_id = ?";
+      connection.query(query, [res.newRoleId, res.employeeId], (err) => {
+        if (err) throw err;
+        console.log("Employee's role has been updated.");
+        start();
+      });
+    });
+}
