@@ -10,3 +10,10 @@ const connection = mysql.createConnection({
     password: "trilogy123",
     database: "employeeTracker_db",
 });
+
+//connecting to the database we just created
+connection.connect((err) => {
+    if (err) throw err;
+    console.log("Connection to database successful!");
+    start();
+});
