@@ -12,7 +12,7 @@ const connection = mysql.createConnection({
 });
 
 //connecting to the database we just created
-db.connect((err) => {
+connection.connect((err) => {
     if (err) throw err;
     console.log("Connection to database successful!");
     start();
@@ -37,8 +37,8 @@ function start() {
         ],
       },
     ])
-    .then((req, res) => {
-      switch (res.choice) {
+    .then((answer) => {
+      switch (answer.choice) {
         case "View all departments":
           viewDepartments();
           break;
@@ -55,13 +55,13 @@ function start() {
           addRole();
           break;
         case "Add an employee":
-          addEmployee
+          addEmployee();
           break;
         case "Update an employee role":
           updateEmployeeRole();
           break;
         case "Quit":
-          db.end();
+          connection.end();
           console.log("Ciao");
           break;
       }})};
@@ -69,7 +69,7 @@ function start() {
 // View departments
 function viewDepartments() {
     const query = "SELECT * FROM departments";
-    db.query(query, (err, results) => {
+    connection.query(query, (err, results) => {
       if (err) throw err;
       console.log(results);
       start();
@@ -79,7 +79,7 @@ function viewDepartments() {
   // View roles
   function viewRoles() {
     const query = "SELECT * FROM roles";
-    db.query(query, (err, results) => {
+    connection.query(query, (err, results) => {
       if (err) throw err;
       console.log(results);
       start();
@@ -89,7 +89,7 @@ function viewDepartments() {
   // View employees
   function viewEmployees() {
     const query = "SELECT * FROM employees";
-    db.query(query, (err, results) => {
+    connection.query(query, (err, results) => {
       if (err) throw err;
       console.log(results);
       start();
@@ -105,11 +105,11 @@ function addDepartment() {
           message: "What is the new department name?",
         },
       ])
-      .then((req, res) => {
+      .then((answers) => {
         const query = "INSERT INTO departments (department_name) VALUES (?)";
-        connection.query(query, [res.departmentName], (err) => {
+        connection.query(query, [answers.departmentName], (err) => {
           if (err) throw err;
-          console.log(`Department '${res.departmentName}' was created!`);
+          console.log(`Department '${answers.departmentName}' was created!`);
           start();
         });
       });
@@ -134,11 +134,11 @@ function addDepartment() {
           message: "What is the department ID for this role?",
         },
       ])
-      .then((req, res) => {
+      .then((answers) => {
         const query = "INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)";
-        connection.query(query, [res.title, res.salary, res.departmentId], (err) => {
+        connection.query(query, [answers.title, answers.salary, answers.departmentId], (err) => {
           if (err) throw err;
-          console.log(`Role '${res.title}' created successfully!`);
+          console.log(`Role '${answers.title}' created successfully!`);
           start();
         });
       });
@@ -168,11 +168,11 @@ function addDepartment() {
           message: "Enter manager's ID if applicable.",
         },
       ])
-      .then((req, res) => {
+      .then((answers) => {
         const query = "INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)";
-        connection.query(query, [res.firstName, res.lastName, res.roleId, res.managerId || null], (err) => {
+        connection.query(query, [answers.firstName, answers.lastName, answers.roleId, answers.managerId || null], (err) => {
           if (err) throw err;
-          console.log(`Employee '${res.firstName} ${res.lastName}' created successfully!`);
+          console.log(`Employee '${answers.firstName} ${answers.lastName}' created successfully!`);
           start();
         });
       });
@@ -192,9 +192,9 @@ function updateEmployeeRole() {
         message: "What is the employee's new role ID?",
       },
     ])
-    .then((req, res) => {
+    .then((answers) => {
       const query = "UPDATE employees SET role_id = ? WHERE employee_id = ?";
-      connection.query(query, [res.newRoleId, res.employeeId], (err) => {
+      connection.query(query, [answers.newRoleId, answers.employeeId], (err) => {
         if (err) throw err;
         console.log("Employee's role has been updated.");
         start();
