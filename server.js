@@ -7,46 +7,106 @@ const connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "trilogy123",
+    password: "Sooki1999",
     database: "employeeTracker_db",
 });
 
 //connecting to the database we just created
-connection.connect((err) => {
+db.connect((err) => {
     if (err) throw err;
     console.log("Connection to database successful!");
     start();
 });
 
+// Start app
+function start() {
+  inquirer.prompt([
+      {
+        type: "list",
+        name: "choice",
+        message: "Select an option:",
+        choices: [
+          "View all departments",
+          "View all roles",
+          "View all employees",
+          "Add a department",
+          "Add a role",
+          "Add an employee",
+          "Update an employee role",
+          "Quit",
+        ],
+      },
+    ])
+    .then((req, res) => {
+      switch (res.choice) {
+        case "View all departments":
+          viewDepartments();
+          break;
+        case "View all roles":
+          viewRoles();
+          break;
+        case "View all employees":
+          viewEmployees();
+          break;
+        case "Add a department":
+          addDepartment();
+          break;
+        case "Add a role":
+          addRole();
+          break;
+        case "Add an employee":
+          addEmployee
+          break;
+        case "Update an employee role":
+          updateEmployeeRole();
+          break;
+        case "Quit":
+          db.end();
+          console.log("Ciao");
+          break;
+      }})};
+
 // View departments
 function viewDepartments() {
     const query = "SELECT * FROM departments";
-    start();
+    db.query(query, (err, results) => {
+      if (err) throw err;
+      console.log(results);
+      start();
+    });
   }
   
   // View roles
   function viewRoles() {
     const query = "SELECT * FROM roles";
-    start();
+    db.query(query, (err, results) => {
+      if (err) throw err;
+      console.log(results);
+      start();
+    });
   }
   
   // View employees
   function viewEmployees() {
     const query = "SELECT * FROM employees";
-    start();
+    db.query(query, (err, results) => {
+      if (err) throw err;
+      console.log(results);
+      start();
+    });
   }
 
   // Add a department
 function addDepartment() {
     inquirer.prompt([
         {
-          type: 'input',
-          name: 'departmentName',
-          message: 'What is the new department name?',
+          type: "input",
+          name: "departmentName",
+          message: "What is the new department name?",
         },
       ])
       .then((req, res) => {
-        const query = 'INSERT INTO departments (department_name) VALUES (?)';
+        const query = "INSERT INTO departments (department_name) VALUES (?)";
         connection.query(query, [res.departmentName], (err) => {
           if (err) throw err;
           console.log(`Department '${res.departmentName}' was created!`);
@@ -108,7 +168,7 @@ function addDepartment() {
           message: "Enter manager's ID if applicable.",
         },
       ])
-      .then((req,res) => {
+      .then((req, res) => {
         const query = "INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)";
         connection.query(query, [res.firstName, res.lastName, res.roleId, res.managerId || null], (err) => {
           if (err) throw err;
@@ -141,42 +201,3 @@ function updateEmployeeRole() {
       });
     });
 }
-
-// Start app
- function start() {
-  inquirer.prompt([
-      {
-        type: "list",
-        name: "choice",
-        message: "Select an option:",
-        choices: [
-          "View all departments",
-          "View all roles",
-          "View all employees",
-          "Add a department",
-          "Add a role",
-          "Add an employee",
-          "Update an employee role",
-        ],
-      },
-    ])
-    .then((req, res) => {
-      switch (res.choice) {
-        case "View all departments":
-          viewDepartments();
-          break;
-        case "View all roles":
-          viewRoles();
-          break;
-        case "View all employees":
-          viewEmployees();
-          break;
-        case "Add a department":
-          addDepartment();
-          break;
-        case "Add a role":
-          addRole();
-          break;
-        case "Add an employee":
-          addEmployee
-      }});
