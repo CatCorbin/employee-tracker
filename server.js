@@ -68,7 +68,7 @@ function start() {
 
 // View departments
 function viewDepartments() {
-    const query = "SELECT * FROM departments";
+    const query = "SELECT * FROM department";
     connection.query(query, (err, results) => {
       if (err) throw err;
       console.log(results);
@@ -78,7 +78,7 @@ function viewDepartments() {
   
   // View roles
   function viewRoles() {
-    const query = "SELECT * FROM roles";
+    const query = "SELECT * FROM role";
     connection.query(query, (err, results) => {
       if (err) throw err;
       console.log(results);
@@ -88,7 +88,7 @@ function viewDepartments() {
   
   // View employees
   function viewEmployees() {
-    const query = "SELECT * FROM employees";
+    const query = "SELECT * FROM employee";
     connection.query(query, (err, results) => {
       if (err) throw err;
       console.log(results);
@@ -106,7 +106,7 @@ function addDepartment() {
         },
       ])
       .then((answers) => {
-        const query = "INSERT INTO departments (department_name) VALUES (?)";
+        const query = "INSERT INTO department (department_name) VALUES (?)";
         connection.query(query, [answers.departmentName], (err) => {
           if (err) throw err;
           console.log(`Department '${answers.departmentName}' was created!`);
@@ -135,7 +135,7 @@ function addDepartment() {
         },
       ])
       .then((answers) => {
-        const query = "INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)";
+        const query = "INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)";
         connection.query(query, [answers.title, answers.salary, answers.departmentId], (err) => {
           if (err) throw err;
           console.log(`Role '${answers.title}' created successfully!`);
@@ -169,7 +169,7 @@ function addDepartment() {
         },
       ])
       .then((answers) => {
-        const query = "INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)";
+        const query = "INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)";
         connection.query(query, [answers.firstName, answers.lastName, answers.roleId, answers.managerId || null], (err) => {
           if (err) throw err;
           console.log(`Employee '${answers.firstName} ${answers.lastName}' created successfully!`);
@@ -193,7 +193,7 @@ function updateEmployeeRole() {
       },
     ])
     .then((answers) => {
-      const query = "UPDATE employees SET role_id = ? WHERE employee_id = ?";
+      const query = "UPDATE employee SET role_id = ? WHERE employee_id = ?";
       connection.query(query, [answers.newRoleId, answers.employeeId], (err) => {
         if (err) throw err;
         console.log("Employee's role has been updated.");
