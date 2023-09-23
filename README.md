@@ -6,7 +6,7 @@
 ## Links
 
 GitHub Repository: https://github.com/CatCorbin/employee-tracker 
-Demo Video:
+Demo Video: https://drive.google.com/file/d/1BtQjynjOgydFIZ-TRQ7xfW9oKbrNIcus/view
 
 ## Description
 
@@ -23,7 +23,7 @@ This application keeps track of a company's departments, jobs, employees, employ
 
 ## Installation
 
-N/A
+To use this application, the code must be cloned onto the users device and be run in the terminal.
 
 ## Usage
 
