@@ -1,6 +1,7 @@
 //We need inquirer and mysql to use this application
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
+const {printTable} = require("console-table-printer");
 
 //creating mysql connection
 const connection = mysql.createConnection({
@@ -71,7 +72,7 @@ function viewDepartments() {
     const query = "SELECT * FROM department";
     connection.query(query, (err, results) => {
       if (err) throw err;
-      console.log(results);
+      printTable(results);
       start();
     });
   }
@@ -81,7 +82,7 @@ function viewDepartments() {
     const query = "SELECT * FROM role";
     connection.query(query, (err, results) => {
       if (err) throw err;
-      console.log(results);
+      printTable(results);
       start();
     });
   }
@@ -91,7 +92,7 @@ function viewDepartments() {
     const query = "SELECT * FROM employee";
     connection.query(query, (err, results) => {
       if (err) throw err;
-      console.log(results);
+      printTable(results);
       start();
     });
   }
@@ -106,7 +107,7 @@ function addDepartment() {
         },
       ])
       .then((answers) => {
-        const query = "INSERT INTO department (department_name) VALUES (?)";
+        const query = "INSERT INTO department (name) VALUES (?)";
         connection.query(query, [answers.departmentName], (err) => {
           if (err) throw err;
           console.log(`Department '${answers.departmentName}' was created!`);
@@ -193,7 +194,7 @@ function updateEmployeeRole() {
       },
     ])
     .then((answers) => {
-      const query = "UPDATE employee SET role_id = ? WHERE employee_id = ?";
+      const query = "UPDATE employee SET role_id = ? Where id = ?";
       connection.query(query, [answers.newRoleId, answers.employeeId], (err) => {
         if (err) throw err;
         console.log("Employee's role has been updated.");
